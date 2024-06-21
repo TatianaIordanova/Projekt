@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Cars</title>
+        <meta charset="UTF-8"></meta>
+<!--        <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" 
+              crossorigin="anonymous"></link>-->
+        <link rel = "stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+              crossorigin="anonymous"></link>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" 
+              crossorigin="anonymous"></link>
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="text-center my-4">Cars list</h1>
+            <a class="btn btn-primary" href="/Projekt/cars/create">Create new car</a>
+            <div th:switch="${cars}">
+                <h2 th:case="null">Cars db is empty. You can create the new car</h2>
+                    <div th:case="*">
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Brand</th>
+                                    <th>Model</th>
+                                    <th>Year</th>
+                                    <th>Color</th>
+                                    <th>Created at</th>
+                                    <th>Image</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="car : ${cars}">
+                                    <td th:text="${car.id}"></td>
+                                    <td th:text="${car.brand}"></td>
+                                    <td th:text="${car.model}"></td>
+                                    <td th:text="${car.year}"></td>
+                                    <td th:text="${car.color}"></td>
+                                    <td th:text="${car.created.toString().substring(0, 10)}"></td>
+                                    <td>
+                                        <img th:src="@{'/images/' + ${car.imageFileName}}" alt="..." width="100"></img>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/cars/edit(id=${car.id})}" class="btn btn-primary btn-sm">Edit</a>
+                                        <a th:href="@{/cars/delete(id=${car.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>                                       
+                    </div>
+            </div>
+        </div>
+        <div class="row">
+            <h2>Request count: </h2>
+            <p th:text="${sessionCounter}"></p>
+        </div>
+        <a th:href="@{/logout}" class="me-3">Log out</a>
+        <a href="/Projekt" role="button">Return</a>
+    </body>
+</html>
